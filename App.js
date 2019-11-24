@@ -7,39 +7,49 @@
  */
 
 import React, {Component} from 'react';
-import {SafeAreaView, View, Text, StyleSheet, Image, FlatList} from 'react-native';
+import {SafeAreaView, ScrollView, View, Text, StyleSheet, Image, FlatList} from 'react-native';
 
 const data = [
   {
     day: 'Monday',
-    temperature: 'something',
-    temperatureMiddle: 'something',
-    temperatureLower: 'something',
+    icon: require('./icons/cloud.png'),
+    color: '#596859',
+    temperature: '20 °C',
+    temperatureMiddle: '21.5 °C',
+    temperatureLower: '22 °C',
   },
   {
     day: 'Tuesday',
-    temperature: 'something',
-    temperatureMiddle: 'something',
-    temperatureLower: 'something',
+    icon: require('./icons/cloud.png'),
+    color: '#7469CF',
+    temperature: '27 °C',
+    temperatureMiddle: '26.5 °C',
+    temperatureLower: '28 °C',
   },
   {
     day: 'Wednesday',
-    temperature: 'something',
-    temperatureMiddle: 'something',
-    temperatureLower: 'something',
+    icon: require('./icons/cloud.png'),
+    color: '#A5E87E',
+    temperature: '24 °C',
+    temperatureMiddle: '25.5 °C',
+    temperatureLower: '25 °C',
   },
   {
     day: 'Thursday',
-    temperature: 'something',
-    temperatureMiddle: 'something',
-    temperatureLower: 'something',
+    icon: require('./icons/cloud.png'),
+    color: '#C5D88E',
+    temperature: '26 °C',
+    temperatureMiddle: '25 °C',
+    temperatureLower: '24.5 °C',
   },
   {
     day: 'Friday',
-    temperature: 'something',
-    temperatureMiddle: 'something',
-    temperatureLower: 'something',
-  }
+    icon: require('./icons/cloud.png'),
+    color: '#C8F8AE',
+    temperature: '23 °C',
+    temperatureMiddle: '23.5 °C',
+    temperatureLower: '23 °C',
+  },
 ];
 
 class App extends Component {
@@ -99,18 +109,18 @@ class App extends Component {
           <View style={style.upperView}>
             <View style={style.subUpperView}>
               <View style={{flex: 0.1, justifyContent: 'center', marginTop: 10}}>
-                <Text style={{alignSelf: 'center', fontSize: 13, fontWeight: 'bold', color: 'white'}}> Current Weather</Text>
+                <Text style={{alignSelf: 'center', fontSize: 14, fontWeight: 'bold', color: 'white'}}> Current Weather</Text>
               </View>
               <View style={{flex: 0.3, justifyContent: 'center', marginTop: 10}}>
                 <Text style={{alignSelf: 'center', fontSize: 50, fontWeight: 'bold', color: 'white'}}> 23 °C</Text>
               </View>
               <View style={{flex: 0.1, justifyContent: 'center', marginTop: 10}}>
-                <Text style={{alignSelf: 'center', fontSize: 15, fontWeight: 'bold', color: 'white'}}> Few Clouds</Text>
+                <Text style={{alignSelf: 'center', fontSize: 16, fontWeight: 'bold', color: 'white'}}> Few Clouds</Text>
               </View>
               <View style={{flex: 0.5, flexDirection: 'row', marginTop: 5}}>
                 <View style={{flex: 0.6, justifyContent: 'center'}}>
-                  <Text style={{alignSelf: 'flex-start', marginLeft: 20, fontSize: 12, fontWeight: 'bold', color: 'white'}}> Humidity 83%</Text>
-                  <Text style={{alignSelf: 'flex-start', marginLeft: 20, marginTop: 7, fontSize: 12, fontWeight: 'bold', color: 'white'}}> Wind 1km/hr</Text>
+                  <Text style={{alignSelf: 'flex-start', marginLeft: 20, fontSize: 13, fontWeight: 'bold', color: 'white'}}> Humidity 83%</Text>
+                  <Text style={{alignSelf: 'flex-start', marginLeft: 20, marginTop: 7, fontSize: 13, fontWeight: 'bold', color: 'white'}}> Wind 1km/hr</Text>
                 </View>
                 <View style={{flex: 0.4, justifyContent: 'center'}}>
                   <Image
@@ -129,7 +139,7 @@ class App extends Component {
               <FlatList horizontal={true}
                 data={this.state.data}
                 renderItem={({item: rowData}) => {
-                  return <FocusWeatherCard />;
+                  return <FocusWeatherCard item={rowData} />;
                 }}
                 keyExtractor={(item, index) => index}
               />
@@ -141,41 +151,36 @@ class App extends Component {
   }
 }
 
-class FocusWeatherCard extends Component {
-  render(): * {
-    const style = StyleSheet.create({
-      container: {
-        flex: 1,
-        flexDirection: 'column',
-        borderRadius: 15,
-        backgroundColor: 'skyblue',
-        width: 125,
-        marginLeft: 6,
-      },
-    });
-    return(
-      <View style={style.container}>
-        <View style={{flex: 0.2, justifyContent: 'center', marginTop: 5}}>
-          <Text style={{ alignSelf: 'center', fontSize: 13, fontWeight: 'bold', color: 'white'}}> Weekday</Text>
-        </View>
-        <View style={{flex: 0.35, justifyContent: 'center', marginTop: 5}}>
-          <Image
-            style={{width: 50, height: 60, alignSelf: 'center'}}
-            source={require('./icons/cloud.png')}
-          />
-        </View>
-        <View style={{flex: 0.1, justifyContent: 'center', marginTop: 5}}>
-          <Text style={{alignSelf: 'center', fontSize: 13, fontWeight: 'bold', color: 'white'}}> Weekday</Text>
-        </View>
-        <View style={{flex: 0.1, justifyContent: 'center', marginTop: 5}}>
-          <Text style={{alignSelf: 'center', fontSize: 11, fontWeight: 'bold', color: 'white'}}> Weekday</Text>
-        </View>
-        <View style={{flex: 0.25, justifyContent: 'flex-end', marginTop: 5, marginBottom: 10}}>
-          <Text style={{alignSelf: 'center', fontSize: 10, fontWeight: 'bold', color: 'white'}}> Weekday</Text>
-        </View>
+function FocusWeatherCard({item}) {
+  const style = StyleSheet.create({
+    container: {
+      flex: 1,
+      flexDirection: 'column',
+      borderRadius: 15,
+      width: 125,
+      marginLeft: 6,
+    },
+  });
+  return (
+    <View style={[style.container, {backgroundColor: item.color}]}>
+      <View style={{flex: 0.2, justifyContent: 'center', marginTop: 5}}>
+        <Text style={{alignSelf: 'center', fontSize: 14, fontWeight: 'bold', color: 'white'}}> {item.day}</Text>
       </View>
-    );
-  }
+      <View style={{flex: 0.35, justifyContent: 'center', marginTop: 5}}>
+        <Image style={{width: 50, height: 60, alignSelf: 'center'}} source={item.icon}
+        />
+      </View>
+      <View style={{flex: 0.1, justifyContent: 'center', marginTop: 5}}>
+        <Text style={{alignSelf: 'center', fontSize: 14, fontWeight: 'bold', color: 'white'}}> {item.temperature}</Text>
+      </View>
+      <View style={{flex: 0.1, justifyContent: 'center', marginTop: 5}}>
+        <Text style={{alignSelf: 'center', fontSize: 13, fontWeight: 'bold', color: 'white'}}> {item.temperatureMiddle}</Text>
+      </View>
+      <View style={{flex: 0.25, justifyContent: 'flex-end', marginTop: 5, marginBottom: 10}}>
+        <Text style={{alignSelf: 'center', fontSize: 12, fontWeight: 'bold', color: 'white'}}> {item.temperatureLower}</Text>
+      </View>
+    </View>
+  );
 }
 
 export default App;
